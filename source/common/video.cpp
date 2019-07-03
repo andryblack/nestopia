@@ -108,7 +108,14 @@ void nst_ogl_init() {
 	glCompileShader(vshader);
 	
 	glGetShaderiv(vshader, GL_COMPILE_STATUS, &status);
-	if (status == GL_FALSE) { fprintf(stderr, "Failed to compile vertex shader\n"); }
+	if (status == GL_FALSE) {
+        fprintf(stderr, "Failed to compile vertex shader\n");
+        GLchar log[512];
+        GLsizei size = 0;
+        glGetShaderInfoLog(vshader,512,&size,log);
+        log[size]=0;
+        fprintf(stderr, "\n%s\n",log);
+    }
 	
 	fshader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fshader, 1, &fshader_src, NULL);

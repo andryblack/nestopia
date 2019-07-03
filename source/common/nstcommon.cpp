@@ -60,6 +60,14 @@ Input::Controllers *cNstPads;
 
 nstpaths_t nstpaths;
 
+#if defined(DATADIR)
+static const char* get_datadir() {
+    return DATADIR;
+}
+#else
+extern const char* get_datadir();
+#endif
+
 static bool ffspeed = false;
 static bool playing = false;
 
@@ -342,7 +350,7 @@ void nst_db_load() {
 	}
 #ifndef _MINGW
 	// If it fails, try looking in the data directory
-	snprintf(dbpath, sizeof(dbpath), "%s/NstDatabase.xml", DATADIR);
+	snprintf(dbpath, sizeof(dbpath), "%s/NstDatabase.xml", get_datadir());
 	nstdb = new std::ifstream(dbpath, std::ifstream::in|std::ifstream::binary);
 	
 	if (nstdb->is_open()) {
